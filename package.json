@@ -4,7 +4,8 @@
   "description": "A rest server",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.ts"
   },
   "author": "Mau Pazaran",
   "license": "MIT",
