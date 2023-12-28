@@ -61,6 +61,15 @@ class Server {
                   const controllerPath = path.join(directoryPath, subdirectory, "/controllers");
                   const {router} = await import(routerPath)
                   this.app.use(`/api/${router.path}`, router.router)
+              } else {
+                  const routerPath2 = path.join(directoryPath, subdirectory, "/routes.js");
+                  if (fs.statSync(routerPath2)
+                        .isFile()
+                  ) {
+                      const controllerPath = path.join(directoryPath, subdirectory, "/controllers");
+                      const {router} = await import(routerPath2)
+                      this.app.use(`/api/${router.path}`, router.router)
+                  }
               }
           });
     }
