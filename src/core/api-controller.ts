@@ -1,5 +1,5 @@
-import express from "express";
-import {ParamsDictionary, Query, Request, Response} from "express-serve-static-core/index"
+// @ts-ignore
+import {ParamsDictionary, Query, Request, Response} from "express-serve-static-core"
 import {APIErrorInterface, APIResponseInterface} from "./server";
 
 export interface GetIdParamInterface {

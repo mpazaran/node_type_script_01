@@ -1,4 +1,6 @@
-import express, {Express, Request, Response} from "express"
+import express from "express"
+// @ts-ignore
+import {Express, Request, Response} from "express-serve-static-core"
 import dotenv from "dotenv";
 import cors from "cors";
 import fs from "fs";
@@ -28,23 +30,18 @@ class Server {
     }
 
     middleWares() {
-        // @ts-ignore
         this.app.use(cors())
-
         this.app.use(express.json())
         /**
          * DEFINE STATIC CONTENT DIR
          */
-        // @ts-ignore
         this.app.use(express.static("public"))
         /**
          * API ENDPOINTS
          */
-        // @ts-ignore
         this.app.get('/', function (request: Request, response: Response) {
             response.send('Hello World')
         })
-
     }
 
     /**
@@ -68,7 +65,6 @@ class Server {
      * START PROCESS
      */
     up() {
-        // @ts-ignore
         this.app.listen(this.port, () => {
             console.log(`Listening on port: ${this.port}`)
         })
