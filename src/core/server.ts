@@ -54,22 +54,12 @@ class Server {
         let directoryPath = `${__dirname}/../modules/`
         fs.readdirSync(directoryPath)
           .forEach(async subdirectory => {
-              const routerPath = path.join(directoryPath, subdirectory, "/routes.ts");
-              if (fs.statSync(routerPath)
-                    .isFile()
-              ) {
-                  const controllerPath = path.join(directoryPath, subdirectory, "/controllers");
+              const routerPath     = path.join(directoryPath, subdirectory, "/routes");
+              try {
                   const {router} = await import(routerPath)
                   this.app.use(`/api/${router.path}`, router.router)
-              } else {
-                  const routerPath2 = path.join(directoryPath, subdirectory, "/routes.js");
-                  if (fs.statSync(routerPath2)
-                        .isFile()
-                  ) {
-                      const controllerPath = path.join(directoryPath, subdirectory, "/controllers");
-                      const {router} = await import(routerPath2)
-                      this.app.use(`/api/${router.path}`, router.router)
-                  }
+              } catch (e) {
+                  //SILENT
               }
           });
     }
