@@ -2,8 +2,36 @@
 import {ParamsDictionary, Query, Request, Response} from "express-serve-static-core"
 import {APIErrorInterface, APIResponseInterface} from "./server";
 
+//import {MongoServerError} from "mongodb";
+
 export interface GetIdParamInterface {
     id: number | string
+}
+
+export interface SearchFilterInterface {
+    f: string
+    v: any
+    c: "eq" |
+        "gt" |
+        "lt" |
+        "gte" |
+        "lte" |
+        "ne" |
+        "in" |
+        "nin"
+}
+
+export interface SearchSortInterface {
+    f: string
+    d: "a" | "d"
+}
+
+export interface SearchQueryInterface {
+    p?: number
+    ps?: number
+    //f?: SearchFilterInterface[]
+    f?: string | { [key: string]: any }
+    s?: SearchSortInterface[]
 }
 
 abstract class ApiController<RequestParamsType = ParamsDictionary,
@@ -22,10 +50,9 @@ abstract class ApiController<RequestParamsType = ParamsDictionary,
         this._response = response
     }
 
-    abstract execute(): void
+    abstract execute(): void | any
 
     success(data: SuccessResponseData) {
-        // @ts-ignore
         this.response
             .json(
                 {
@@ -36,14 +63,28 @@ abstract class ApiController<RequestParamsType = ParamsDictionary,
     }
 
     error(message: string, data: ErrorResponseData | undefined = undefined, status: number = 500) {
-        // @ts-ignore
         this.response
             .status(status)
             .json(
                 {
-                    ok: false,
-                    message,
+                    ok     : false,
+                    message: message,
                     data
+                }
+            )
+    }
+
+    exception(error: any | Error) {
+        /*if(typeof error === MongoServerError && en){
+
+        }*/
+        this.response
+            .status(500)
+            .json(
+                {
+                    ok       : false,
+                    message  : error.message,
+                    errorInfo: error
                 }
             )
     }

@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import fs from "fs";
 import path from "path";
+import MainDB from "../source/MainDB"
 
 export interface APIResponseInterface {
     ok: boolean
@@ -13,6 +14,7 @@ export interface APIResponseInterface {
 
 export interface APIErrorInterface extends APIResponseInterface {
     message: string
+    errorInfo?: object
 }
 
 class Server {
@@ -22,8 +24,7 @@ class Server {
     private port: number;
 
     constructor() {
-        this.app = express()
-        dotenv.config()
+        this.app  = express()
         this.port = parseInt(process.env.PORT as string)
         this.middleWares()
         this.routes()
@@ -42,6 +43,9 @@ class Server {
         this.app.get('/', function (request: Request, response: Response) {
             response.send('Hello World')
         })
+
+        let connection = MainDB.getInstance(process.env.MONGO_CONNECTION as string)
+
     }
 
     /**
@@ -51,12 +55,13 @@ class Server {
         let directoryPath = `${__dirname}/../modules/`
         fs.readdirSync(directoryPath)
           .forEach(async subdirectory => {
-              const routerPath     = path.join(directoryPath, subdirectory, "/routes");
+              const routerPath = path.join(directoryPath, subdirectory, "/routes");
               try {
                   const {router} = await import(routerPath)
                   this.app.use(`/api/${router.path}`, router.router)
               } catch (e) {
                   //SILENT
+                  console.log(e)
               }
           });
     }
