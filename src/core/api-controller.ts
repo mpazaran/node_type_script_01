@@ -97,6 +97,49 @@ abstract class ApiController<RequestParamsType = ParamsDictionary,
         return this._response;
     }
 
+    getQuery(addFilterDeleted: boolean = false, field: string = "status", value: string = "d"): RequestBodyType | any {
+        let query: RequestBodyType | any = this.request.body
+
+        if (!addFilterDeleted) {
+            return query
+        }
+        if (query.hasOwnProperty("status")) {
+            let statusDeleted = [
+                {
+                    [field]: query[field]
+                },
+                {
+                    [field]: {"$ne": value}
+                }
+            ]
+            delete query.status
+
+            if (query.hasOwnProperty("$and")) {
+                query["$and"] = [
+                    ...query["$and"],
+                    ...statusDeleted
+                ]
+            } else {
+                query["$and"] = [
+                    query,
+                    ...statusDeleted
+                ]
+            }
+
+            return query
+
+        } else {
+            return {
+                "$and": [
+                    query,
+                    {
+                        [field]: {"$ne": value}
+                    }
+                ]
+            }
+        }
+    }
+
 }
 
 export default ApiController
