@@ -1,4 +1,4 @@
-import {Schema, model} from "mongoose"
+import {Schema, Types, model, Model} from 'mongoose';
 
 export enum CatalogType {
     COLOR = "c",
@@ -12,18 +12,18 @@ export enum CatalogVisibility {
     PRIVATE   = "private"
 }
 
-export interface CatalogValueSchemaInterface {
-    _id?: string
+export interface CatalogValueInterface {
+    _id?: Types.ObjectId
     value: string
     label: string
 }
 
-const CatalogValueSchema = new Schema<CatalogValueSchemaInterface>({
+const CatalogValueSchema = new Schema<CatalogValueInterface>({
     value: {
-        type    : "string",
+        type    : String,
         required: [
             true,
-            `CODE_REQUIRED:`
+            `VALUE_REQUIRED:`
         ],
         unique  : true,
         index   : {
@@ -32,15 +32,33 @@ const CatalogValueSchema = new Schema<CatalogValueSchemaInterface>({
         }
     },
     label: {
-        type    : "string",
+        type    : String,
         required: [
             true,
-            `NAME_REQUIRED:`
+            `LABEL_REQUIRED:`
         ]
     }
 })
 
-const CatalogSchema = new Schema({
+export interface CatalogInterface {
+    _id?: Types.ObjectId
+    code: "string"
+    name: "string"
+    icon?: "string"
+    description?: "string"
+    type: CatalogType
+    visibility: CatalogVisibility
+    options: CatalogValueInterface[]
+}
+
+
+type CatalogProps = {
+    options: Types.DocumentArray<CatalogValueInterface>;
+};
+
+type CatalogModelType = Model<CatalogInterface, {}, CatalogProps>;
+
+const CatalogSchema = new Schema<CatalogInterface, CatalogModelType>({
     code       : {
         type    : "string",
         required: [
@@ -70,27 +88,24 @@ const CatalogSchema = new Schema({
         type: "string",
         enum: CatalogType
     },
-    visibility       : {
+    visibility : {
         type: "string",
         enum: CatalogVisibility
     },
-    options    : {
-        type: [CatalogValueSchema],
-    }
+    options    : [CatalogValueSchema]
 })
 
 
 CatalogValueSchema.methods.toJSON = function () {
-    const {__v, _id, ...data} = this.toObject()
+    const {__v, ...data} = this.toObject()
     return {
-        id: _id,
         ...data
     }
 }
 
 CatalogSchema.methods.toJSON = function () {
-    const {__v, _id, ...data} = this.toObject()
-    data.options              = data.options.map((value: CatalogValueSchemaInterface) => {
+    const {__v, ...data} = this.toObject()
+    data.options              = data.options.map((value: CatalogValueInterface) => {
             const {
                       _id,
                       ...catalogOptionValue
@@ -99,9 +114,8 @@ CatalogSchema.methods.toJSON = function () {
         }
     )
     return {
-        id: _id,
         ...data
     }
 }
 
-export default model("Catalog", CatalogSchema)
+export default model<CatalogInterface, CatalogModelType>("Catalog", CatalogSchema)

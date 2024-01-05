@@ -1,14 +1,7 @@
 import ApiController from "../../../../core/api-controller"
-import Catalog from "../../schema/catalog";
+import Catalog, {CatalogInterface} from "../../schema/catalog";
 
-interface CatalogCreate {
-    code: string
-    name: string
-    icon?: string
-    description?: string
-}
-
-class Create extends ApiController<never, never, CatalogCreate> {
+class Create extends ApiController<never, never, CatalogInterface> {
     async execute() {
 
         const data = this.request.body

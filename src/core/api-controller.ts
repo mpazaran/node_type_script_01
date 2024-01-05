@@ -29,7 +29,6 @@ export interface SearchSortInterface {
 export interface SearchQueryInterface {
     p?: number
     ps?: number
-    //f?: SearchFilterInterface[]
     f?: string | { [key: string]: any }
     s?: SearchSortInterface[]
 }

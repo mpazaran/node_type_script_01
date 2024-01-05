@@ -1,18 +1,8 @@
-import ApiController from "../../../../core/api-controller"
-import Catalog from "../../schema/catalog";
+import ApiController, {GetIdParamInterface} from "../../../../core/api-controller"
+import Catalog, {CatalogInterface} from "../../schema/catalog";
 
-interface CatalogUpdateParams {
-    id: string
-}
 
-interface CatalogUpdate {
-    code: string
-    name: string
-    icon?: string
-    description?: string
-}
-
-class Update extends ApiController<CatalogUpdateParams, never, CatalogUpdate> {
+class Update extends ApiController<GetIdParamInterface, never, CatalogInterface> {
     async execute() {
 
         try {

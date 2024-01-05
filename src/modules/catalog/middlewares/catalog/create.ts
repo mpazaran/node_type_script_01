@@ -1,5 +1,5 @@
 import {check} from "express-validator"
-import Catalog, {CatalogType, CatalogValueSchemaInterface, CatalogVisibility} from "../../schema/catalog";
+import Catalog, {CatalogType, CatalogValueInterface, CatalogVisibility} from "../../schema/catalog";
 
 const validators: any[] = [
     check("code")
@@ -31,7 +31,7 @@ const validators: any[] = [
         .isIn(Object.values(CatalogVisibility)),
     check("options", "IS_NOT_AN_ARRAY")
         .isArray()
-        .custom(async (options: CatalogValueSchemaInterface[]) => {
+        .custom(async (options: CatalogValueInterface[]) => {
             const unique: { [key: string]: boolean } = {}
             for (let i = 0; i < options.length; i++) {
                 let option = options[i]
