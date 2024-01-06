@@ -1,4 +1,4 @@
-import {Schema, model} from "mongoose"
+import {Schema, model, Types} from "mongoose"
 
 export enum UserSource {
     API    = "a",
@@ -19,7 +19,19 @@ export enum UserRol {
     CMS   = "c",
 }
 
-const UserSchema = new Schema({
+export interface UserInterface {
+    _id?: Types.ObjectId
+    first_name: string
+    last_name: string
+    email: string
+    password: string
+    role: UserRol
+    image: string
+    status: UserStatus,
+    source: UserSource
+}
+
+const UserSchema = new Schema<UserInterface>({
     first_name: {
         type    : "string",
         required: [

@@ -1,18 +1,7 @@
 import ApiController from "../../../../core/api-controller"
-import User, {UserRol, UserSource, UserStatus} from "../../schema/user";
+import User, {UserInterface, UserRol, UserSource, UserStatus} from "../../schema/user";
 
-interface UserCreate {
-    first_name: string
-    last_name: string
-    email: string
-    password: string
-    role: UserRol
-    image: string
-    status: UserStatus,
-    source: UserSource
-}
-
-class Create extends ApiController<never, never, UserCreate> {
+class Create extends ApiController<never, never, UserInterface> {
     async execute() {
 
         const data = this.request.body
