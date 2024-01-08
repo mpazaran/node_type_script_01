@@ -4,11 +4,11 @@ import jwt from "jsonwebtoken";
 export {}
 
 declare module 'jsonwebtoken' {
-    export interface UserIDJwtPayload extends jwt.JwtPayload {
-        uid: string;
+    export interface JwtPayloadWithUserData extends jwt.JwtPayload {
+        uuid: string/*;
         email: string;
         first_name: string;
         last_name: string;
-        role: string;
+        role: string;*/
     }
 }

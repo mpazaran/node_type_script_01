@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export interface UserPayload {
-    uid: string;
+    uuid: string;
     email: string;
     first_name: string;
     last_name: string;
@@ -20,7 +20,7 @@ class Login extends ApiController<never, never, UserLoginInterface> {
 
             const user = await User.findOne({
                 email : data.email,
-                status: UserStatus.PENDING
+                status: UserStatus.CONFIRMED
             })
 
             if (user) {
@@ -28,7 +28,7 @@ class Login extends ApiController<never, never, UserLoginInterface> {
 
                     const token: string = await this.createJwt(user)
                     const {
-                              _id: uid,
+                              _id: uuid,
                               email,
                               first_name,
                               last_name,
@@ -37,7 +37,7 @@ class Login extends ApiController<never, never, UserLoginInterface> {
                     return this.success(
                         {
                             user: {
-                                uid,
+                                uuid,
                                 email,
                                 first_name,
                                 last_name,
@@ -60,7 +60,11 @@ class Login extends ApiController<never, never, UserLoginInterface> {
         return new Promise((resolve, reject) => {
             jwt.sign(
                 {
-                    uuid: user._id
+                    uuid      : user._id/*,
+                    email     : user.email,
+                    first_name: user.first_name,
+                    last_name : user.last_name,
+                    role      : user.role*/
                 },
                 process.env.JWT_SECRET as string,
                 {

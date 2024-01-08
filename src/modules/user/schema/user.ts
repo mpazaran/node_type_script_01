@@ -1,5 +1,7 @@
 import {Schema, model, Types} from "mongoose"
 
+//import Role from "../../role/schema/role"
+
 export enum UserSource {
     API    = "a",
     GOOGLE = "g",
@@ -14,18 +16,13 @@ export enum UserStatus {
     SUSPENDED = "s",
 }
 
-export enum UserRol {
-    ADMIN = "a",
-    CMS   = "c",
-}
-
 export interface UserInterface {
     _id?: Types.ObjectId
     first_name: string
     last_name: string
     email: string
     password: string
-    role: UserRol
+    role: string
     image: string
     status: UserStatus,
     source: UserSource

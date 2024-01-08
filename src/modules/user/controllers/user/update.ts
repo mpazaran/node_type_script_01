@@ -1,6 +1,6 @@
 import ApiController, {GetIdParamInterface} from "../../../../core/api-controller"
 import User from "../../schema/user";
-import {UserRol, UserSource, UserStatus} from "../../schema/user";
+import {UserSource, UserStatus} from "../../schema/user";
 
 
 interface UserUpdate {
@@ -8,7 +8,7 @@ interface UserUpdate {
   last_name: string
   email: string
   password?: string
-  role: UserRol
+  role: string
   image: string
   status: UserStatus,
   source: UserSource
