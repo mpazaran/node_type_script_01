@@ -2,6 +2,7 @@ import {Request, Response, Router} from "express"
 import {APIErrorInterface, APIResponseInterface} from "./server";
 import {validationResult} from "express-validator";
 import ApiController from "./api-controller";
+import protectedController from "../core/middlewares/protected-controller"
 
 type methods =
     "post"
@@ -18,28 +19,29 @@ class ModuleRouter {
         this.router = Router()
     }
 
-    async expose(method: methods, path: string, controllerImport: string, middleware: string = "") {
-        let definedMiddlewares = []
-        if (middleware !== "") {
-            const middlewareImport = await import(`../modules/${middleware}`)
-            definedMiddlewares     = middlewareImport.default
-        }
+    expose(method: methods, path: string, ControllerClass: any, middlewares: any[] = []) {
         // @ts-ignore
         this.router[method](
             path,
-            definedMiddlewares,
+            middlewares,
             async (request: Request, response: Response<APIResponseInterface | APIErrorInterface>) => {
-
+                const controller: ApiController = new ControllerClass(request, response)
                 const errors                    = validationResult(request)
-                const controllerClass           = await import(`../modules/${controllerImport}`)
-                const controller: ApiController = new controllerClass.default(request, response)
-
                 if (errors.isEmpty()) {
                     controller.execute()
                 } else {
                     controller.error("INPUT_ERROR", errors)
                 }
             }
+        )
+    }
+
+    exposeProtected(method: methods, path: string, ControllerClass: any, middlewares: any[] = []) {
+        // @ts-ignore
+        this.expose(method, path, ControllerClass, [
+                protectedController,
+                ...middlewares
+            ]
         )
     }
 }

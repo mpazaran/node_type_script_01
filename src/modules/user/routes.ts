@@ -1,10 +1,23 @@
 import ModuleRouter from "../../core/module-router";
 
+import middlewaresCreate from "./middlewares/user/create"
+import middlewaresUpdate from "./middlewares/user/update"
+import middlewaresSearch from "./middlewares/user/search"
+import middlewaresDelete from "./middlewares/user/delete"
+import middlewaresLogin from "./middlewares/user/login"
+
+import Create from "./controllers/user/create"
+import Update from "./controllers/user/update"
+import Search from "./controllers/user/search"
+import Erase from "./controllers/user/erase"
+import Login from "./controllers/user/login"
+
 const router = new ModuleRouter("user")
 
-router.expose("post", "/", "user/controllers/user/create", "user/middlewares/user/create");
-router.expose("put", "/:id", "user/controllers/user/update", "user/middlewares/user/update");
-router.expose("post", "/search", "user/controllers/user/search", "user/middlewares/user/search");
-router.expose("delete", "/:id", "user/controllers/user/erase", "user/middlewares/user/delete");
+router.exposeProtected("post", "/", Create, middlewaresCreate)
+router.exposeProtected("put", "/:id", Update, middlewaresUpdate)
+router.exposeProtected("post", "/search", Search, middlewaresSearch)
+router.exposeProtected("delete", "/:id", Erase, middlewaresDelete)
+router.expose("post", "/login", Login, middlewaresLogin)
 
 export {router}

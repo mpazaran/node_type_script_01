@@ -2,6 +2,7 @@ import ApiController from "../../../../core/api-controller"
 import User, {UserInterface, UserRol, UserSource, UserStatus} from "../../schema/user";
 
 class Create extends ApiController<never, never, UserInterface> {
+
     async execute() {
 
         const data = this.request.body

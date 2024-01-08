@@ -1,11 +1,17 @@
 import ModuleRouter from "../../core/module-router";
+import Create from "./controllers/create"
+import Update from "./controllers/update"
+import Get from "./controllers/get"
+import Search from "./controllers/search"
+import Erase from "./controllers/erase"
+import middlewaresCreate from "./middlewares/create"
 
 const router = new ModuleRouter("rol")
 
-router.expose("post", "/", "role/controllers/create", "role/middlewares/create");
-router.expose("put", "/", "role/controllers/update");
-router.expose("get", "/:id", "role/controllers/get");
-router.expose("get", "/", "role/controllers/search");
-router.expose("delete", "/:id", "role/controllers/erase");
+router.expose("post", "/", Create, middlewaresCreate);
+router.expose("put", "/", Update);
+router.expose("get", "/:id", Get);
+router.expose("get", "/", Search);
+router.expose("delete", "/:id", Erase);
 
 export {router}

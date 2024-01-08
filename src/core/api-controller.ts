@@ -43,7 +43,7 @@ abstract class ApiController<RequestParamsType = ParamsDictionary,
     private readonly _response: Response<APIResponseInterface | APIErrorInterface>;
 
     constructor(
-        request: Request<RequestParamsType, any, RequestBodyType, RequestQueryType>,
+        request: Request<RequestParamsType, any, RequestBodyType, RequestQueryType> | any,
         response: Response) {
         this._request  = request
         this._response = response
@@ -82,7 +82,7 @@ abstract class ApiController<RequestParamsType = ParamsDictionary,
             .json(
                 {
                     ok       : false,
-                    message  : error.message,
+                    message  : error?.message,
                     errorInfo: error
                 }
             )

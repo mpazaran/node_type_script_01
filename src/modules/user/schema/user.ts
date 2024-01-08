@@ -31,6 +31,11 @@ export interface UserInterface {
     source: UserSource
 }
 
+export interface UserLoginInterface {
+    email: string
+    password: string
+}
+
 const UserSchema = new Schema<UserInterface>({
     first_name: {
         type    : "string",
