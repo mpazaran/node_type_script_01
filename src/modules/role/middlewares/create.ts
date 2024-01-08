@@ -1,5 +1,5 @@
 import {check} from "express-validator"
-import Role from "../schema/role";
+import Role, {RoleActionInterface} from "../schema/role";
 
 const validators: any[] = [
     check("code")
@@ -16,7 +16,19 @@ const validators: any[] = [
         .not()
         .isEmpty(),
     check("description", "ROL_DESCRIPTION")
-        .trim()
+        .trim(),
+    check("actions", "IS_NOT_AN_ARRAY")
+        .isArray()
+        .custom(async (options: RoleActionInterface[]) => {
+            const unique: { [key: string]: boolean } = {}
+            for (let i = 0; i < options.length; i++) {
+                let option = options[i]
+                if (unique.hasOwnProperty(option.path)) {
+                    throw new Error("NON_UNIQUE_VALUES")
+                }
+                unique[option.path] = true
+            }
+        })
 ]
 
 export default validators

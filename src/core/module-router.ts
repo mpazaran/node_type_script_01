@@ -4,7 +4,7 @@ import {validationResult} from "express-validator";
 import ApiController from "./api-controller";
 import protectedController from "../core/middlewares/protected-controller"
 
-type methods =
+export type RouteMethods =
     "post"
     | "put"
     | "get"
@@ -19,7 +19,7 @@ class ModuleRouter {
         this.router = Router()
     }
 
-    expose(method: methods, path: string, ControllerClass: any, middlewares: any[] = []) {
+    expose(method: RouteMethods, path: string, ControllerClass: any, middlewares: any[] = []) {
         // @ts-ignore
         this.router[method](
             path,
@@ -36,7 +36,7 @@ class ModuleRouter {
         )
     }
 
-    exposeProtected(method: methods, path: string, ControllerClass: any, middlewares: any[] = []) {
+    exposeProtected(method: RouteMethods, path: string, ControllerClass: any, middlewares: any[] = []) {
         // @ts-ignore
         this.expose(method, path, ControllerClass, [
                 protectedController,

@@ -2,6 +2,7 @@ import {Request, Response, NextFunction} from "express";
 import {APIErrorInterface, APIResponseInterface} from "../server";
 import jwt from "jsonwebtoken";
 import User, {UserStatus} from "../../modules/user/schema/user"
+import Role from "../../modules/role/schema/role"
 
 /**
  *
@@ -26,8 +27,39 @@ const protectedController = async (
             })
 
             if (request.user) {
-                return next()
+
+                const actionAllowed = await Role.findOne({
+                    "code"   : request.user.role,
+                    "actions": {
+                        "$elemMatch": {
+                            "method": request.method.toLowerCase(),
+                            "path"  : request.baseUrl + request.route.path
+                        }
+                    }
+                })
+
+                if (actionAllowed) {
+                    return next()
+                } else {
+                    console.warn({
+                        "error" : "ACTION_NOT_ALLOWED",
+                        "role"  : request.user.role,
+                        "action": {
+                            "method": request.method.toLowerCase(),
+                            "path"  : request.baseUrl + request.route.path
+                        }
+                    })
+                }
+            } else {
+                console.warn({
+                    "error": "USER_NOT_FUND_OR_NOT_CONFIRMED",
+                    "user" : request.uuid
+                })
             }
+        } else {
+            console.info({
+                "error": "NO_UUID_ON_JWT_TOKEN_PAYLOAD"
+            })
         }
 
     } catch (e) {
