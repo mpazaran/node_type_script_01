@@ -28,6 +28,10 @@ const protectedController = async (
 
             if (request.user) {
 
+                if (request.user.role != process.env.JWT_SUPER_ADMIN_ROLE) {
+                    return next()
+                }
+
                 const actionAllowed = await Role.findOne({
                     "code"   : request.user.role,
                     "actions": {

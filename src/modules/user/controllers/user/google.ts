@@ -3,13 +3,22 @@ import User, {UserLoginInterface, UserInterface, UserSource, UserStatus} from ".
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-class Login extends ApiController<never, never, UserLoginInterface> {
+export interface GoogleParamsInterface {
+    token: string;
+}
+
+class Google extends ApiController<never, never, GoogleParamsInterface> {
     async execute() {
 
         const data = this.request.body
 
         try {
 
+            console.log(data.token)
+            const googleData = jwt.decode(data.token);
+            console.log(googleData)
+            return this.success(googleData)
+            /*
             const user = await User.findOne({
                 email : data.email,
                 status: UserStatus.CONFIRMED
@@ -38,7 +47,7 @@ class Login extends ApiController<never, never, UserLoginInterface> {
                             token
                         })
                 }
-            }
+            }*/
 
             this.error("INVALID_USER_OR_PASSWORD")
 
@@ -48,33 +57,6 @@ class Login extends ApiController<never, never, UserLoginInterface> {
 
     }
 
-    createJwt(user: UserInterface): Promise<string> {
-        return new Promise((resolve, reject) => {
-            jwt.sign(
-                {
-                    uuid      : user._id/*,
-                    email     : user.email,
-                    first_name: user.first_name,
-                    last_name : user.last_name,
-                    role      : user.role*/
-                },
-                process.env.JWT_SECRET as string,
-                {
-                    expiresIn: process.env.JWT_LIFE_TIME
-                }, (
-                    error: Error | null,
-                    encoded: string | undefined,
-                ) => {
-                    if (error) {
-                        reject(error as Error)
-                    } else {
-                        resolve(encoded as string)
-                    }
-
-                }
-            )
-        })
-    }
 }
 
-export default Login
+export default Google

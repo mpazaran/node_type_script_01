@@ -5,12 +5,13 @@ const validators: any[] = [
     check("code")
         .trim()
         .not()
-        .isEmpty().custom(async (code) => {
-        const exists = await Role.findOne({code})
-        if (exists) {
-            throw new Error(`ROL_CODE_EXISTS`)
-        }
-    }),
+        .isEmpty()
+        .custom(async (code) => {
+            const exists = await Role.findOne({code})
+            if (exists) {
+                throw new Error(`ROL_CODE_EXISTS`)
+            }
+        }),
     check("name")
         .trim()
         .not()
@@ -20,13 +21,13 @@ const validators: any[] = [
     check("actions", "IS_NOT_AN_ARRAY")
         .isArray()
         .custom(async (options: RoleActionInterface[]) => {
-            const unique: { [key: string]: boolean } = {}
+            const unique: { [key: string]: string } = {}
             for (let i = 0; i < options.length; i++) {
                 let option = options[i]
-                if (unique.hasOwnProperty(option.path)) {
+                if (unique.hasOwnProperty(option.path) && unique[option.path] == option.method) {
                     throw new Error("NON_UNIQUE_VALUES")
                 }
-                unique[option.path] = true
+                unique[option.path] = option.method
             }
         })
 ]

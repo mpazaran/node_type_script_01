@@ -36,7 +36,7 @@ class Server {
         /**
          * DEFINE STATIC CONTENT DIR
          */
-        this.app.use(express.static("public"))
+        this.app.use(express.static("./src/public"))
         /**
          * API ENDPOINTS
          */
