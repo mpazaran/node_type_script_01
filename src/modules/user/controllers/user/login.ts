@@ -1,12 +1,13 @@
 import ApiController from "../../../../core/api-controller"
-import User, {UserLoginInterface, UserInterface, UserSource, UserStatus} from "../../schema/user";
+import User, {UserLoginRequestInterface, UserInterface, UserSource, UserStatus} from "../../schema/user";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-class Login extends ApiController<never, never, UserLoginInterface> {
+
+class Login<LoginRequestBodyType = UserLoginRequestInterface> extends ApiController<never, never, LoginRequestBodyType> {
     async execute() {
 
-        const data = this.request.body
+        const data = this.request.body as UserLoginRequestInterface
 
         try {
 
@@ -17,26 +18,7 @@ class Login extends ApiController<never, never, UserLoginInterface> {
 
             if (user) {
                 if (bcrypt.compareSync(data.password, user.password)) {
-
-                    const token: string = await this.createJwt(user)
-                    const {
-                              _id: uuid,
-                              email,
-                              first_name,
-                              last_name,
-                              role
-                          }             = user
-                    return this.success(
-                        {
-                            user: {
-                                uuid,
-                                email,
-                                first_name,
-                                last_name,
-                                role
-                            },
-                            token
-                        })
+                    return this.successToken(user)
                 }
             }
 
@@ -48,11 +30,35 @@ class Login extends ApiController<never, never, UserLoginInterface> {
 
     }
 
+    async successToken(user: UserInterface) {
+        const token: string = await this.createJwt(user)
+        const {
+                  _id: uuid,
+                  email,
+                  firstName,
+                  lastName,
+                  role,
+                  image
+              }             = user
+        this.success(
+            {
+                user: {
+                    uuid      : user._id,
+                    email     : user.email,
+                    first_name: user.firstName,
+                    last_name : user.lastName,
+                    role      : user.role,
+                    image     : user.image,
+                },
+                token
+            })
+    }
+
     createJwt(user: UserInterface): Promise<string> {
         return new Promise((resolve, reject) => {
             jwt.sign(
                 {
-                    uuid      : user._id/*,
+                    uuid: user._id/*,
                     email     : user.email,
                     first_name: user.first_name,
                     last_name : user.last_name,

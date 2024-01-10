@@ -18,8 +18,8 @@ export enum UserStatus {
 
 export interface UserInterface {
     _id?: Types.ObjectId
-    first_name: string
-    last_name: string
+    firstName: string
+    lastName: string
     email: string
     password: string
     role: string
@@ -28,46 +28,48 @@ export interface UserInterface {
     source: UserSource
 }
 
-export interface UserLoginInterface {
+export interface UserLoginRequestInterface {
     email: string
     password: string
 }
 
 const UserSchema = new Schema<UserInterface>({
-    first_name: {
+    firstName: {
         type    : "string",
         required: [
             true,
-            `STRINGS_USER_NAME_REQUIRED:`
+            `USER_NAME_REQUIRED`
         ]
     },
-    last_name : {
+    lastName: {
         type    : "string",
         required: [
             true,
-            `STRINGS_USER_NAME_REQUIRED:`
+            `USER_NAME_REQUIRED`
         ]
     },
     email     : {
         type    : "string",
         required: [
             true,
-            `STRINGS_USER_EMAIL_REQUIRED:`
+            `USER_EMAIL_REQUIRED`
         ],
         unique  : true
     },
     password  : {
         type    : "string",
         required: [
-            true,
-            `STRINGS_USER_PASSWORD_REQUIRED:`
+            function () {
+                return this.source !== UserSource.GOOGLE;
+            },
+            `USER_PASSWORD_REQUIRED`
         ]
     },
     source    : {
         type    : "string",
         required: [
             true,
-            `STRINGS_USER_SOURCE_REQUIRED:`
+            `USER_SOURCE_REQUIRED`
         ],
         enum    : UserSource
     },
@@ -75,7 +77,7 @@ const UserSchema = new Schema<UserInterface>({
         type    : "string",
         required: [
             true,
-            `STRINGS_USER_ROLE_REQUIRED:`
+            `USER_ROLE_REQUIRED`
         ],
     },
     image     : {
@@ -85,7 +87,7 @@ const UserSchema = new Schema<UserInterface>({
         type    : "string",
         required: [
             true,
-            `STRINGS_USER_STATE_REQUIRED:`
+            `USER_STATE_REQUIRED`
         ]
 
     },
