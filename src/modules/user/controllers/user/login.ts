@@ -1,4 +1,4 @@
-import ApiController from "../../../../core/api-controller"
+import ApiController from "../../../../core/controllers/api-controller"
 import User, {UserLoginRequestInterface, UserInterface, UserSource, UserStatus} from "../../schema/user";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";

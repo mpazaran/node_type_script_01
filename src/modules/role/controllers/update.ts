@@ -1,4 +1,4 @@
-import ApiController from "../../../core/api-controller"
+import ApiController from "../../../core/controllers/api-controller"
 
 class Update extends ApiController<any, any> {
   execute() {

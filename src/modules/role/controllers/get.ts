@@ -1,4 +1,4 @@
-import ApiController, {GetIdParamInterface} from "../../../core/api-controller"
+import ApiController, {GetIdParamInterface} from "../../../core/controllers/api-controller"
 
 
 class Get extends ApiController<GetIdParamInterface, never, never> {

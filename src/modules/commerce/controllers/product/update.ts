@@ -1,6 +1,6 @@
 import ApiController, {GetIdParamInterface} from "../../../../core/controllers/api-controller"
 import User from "../../schema/user";
-import {UserSource, UserStatus} from "../../schema/user";
+import {UserSource, ProductStatus} from "../../schema/user";
 
 
 interface UserUpdate {
@@ -10,7 +10,7 @@ interface UserUpdate {
   password?: string
   role: string
   image: string
-  status: UserStatus,
+  status: ProductStatus,
   source: UserSource
 }
 

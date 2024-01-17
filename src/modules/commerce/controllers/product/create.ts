@@ -1,12 +1,16 @@
 import ApiController from "../../../../core/controllers/api-controller"
-import Catalog, {CatalogInterface} from "../../schema/catalog";
+import User, {UserInterface, UserSource, ProductStatus} from "../../schema/user";
 
-class Create extends ApiController<never, never, CatalogInterface> {
+class Create extends ApiController<never, never, UserInterface> {
+
     async execute() {
 
         const data = this.request.body
 
-        const newItem = new Catalog(data)
+        data.status = ProductStatus.PENDING
+        data.source = UserSource.API
+
+        const newItem = new User(data)
 
         try {
             let result = await newItem.save()

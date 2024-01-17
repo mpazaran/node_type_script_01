@@ -1,19 +1,18 @@
 import ApiController, {GetIdParamInterface, SearchQueryInterface} from "../../../../core/controllers/api-controller"
 import User from "../../schema/user"
+import {ProductStatus} from "../../../user/schema/user";
 
 
-class Search extends ApiController<never, any, any> {
+class Search extends ApiController<GetIdParamInterface, never, never> {
     async execute() {
 
-        const page: number     = this.request.query.p || 0
-        const pageSize: number = this.request.query.ps || 20
-        let query: any = this.getQuery(true)
+        const id = this.request.params.id
 
-        const totalPromise = User.countDocuments(query as { [key: string]: any })
         const usersPromise = User
-            .find(query)
-            .skip(page * pageSize)
-            .limit(pageSize)
+            .findOne({
+                _id: id,
+                status: ProductStatus.
+            })
 
         const [total, list] = await Promise.all([
             totalPromise,

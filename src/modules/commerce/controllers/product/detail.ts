@@ -2,12 +2,12 @@ import ApiController, {GetIdParamInterface, SearchQueryInterface} from "../../..
 import User from "../../schema/user"
 
 
-class Search extends ApiController<never, any, any> {
+class Detail extends ApiController<never, any, any> {
     async execute() {
 
         const page: number     = this.request.query.p || 0
         const pageSize: number = this.request.query.ps || 20
-        let query: any = this.getQuery(true)
+        let query: any         = this.getQuery(true)
 
         const totalPromise = User.countDocuments(query as { [key: string]: any })
         const usersPromise = User
@@ -27,4 +27,4 @@ class Search extends ApiController<never, any, any> {
     }
 }
 
-export default Search
+export default Detail

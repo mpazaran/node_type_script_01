@@ -23,7 +23,7 @@ const CatalogValueSchema = new Schema<CatalogValueInterface>({
         type    : String,
         required: [
             true,
-            `VALUE_REQUIRED:`
+            `VALUE_REQUIRED`
         ],
         unique  : true,
         index   : {
@@ -35,7 +35,7 @@ const CatalogValueSchema = new Schema<CatalogValueInterface>({
         type    : String,
         required: [
             true,
-            `LABEL_REQUIRED:`
+            `LABEL_REQUIRED`
         ]
     }
 })
@@ -63,7 +63,7 @@ const CatalogSchema = new Schema<CatalogInterface, CatalogModelType>({
         type    : "string",
         required: [
             true,
-            `CODE_REQUIRED:`
+            `CODE_REQUIRED`
         ],
         unique  : true,
         index   : {
@@ -75,7 +75,7 @@ const CatalogSchema = new Schema<CatalogInterface, CatalogModelType>({
         type    : "string",
         required: [
             true,
-            `NAME_REQUIRED:`
+            `NAME_REQUIRED`
         ]
     },
     icon       : {

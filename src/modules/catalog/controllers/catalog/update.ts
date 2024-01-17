@@ -1,4 +1,4 @@
-import ApiController, {GetIdParamInterface} from "../../../../core/api-controller"
+import ApiController, {GetIdParamInterface} from "../../../../core/controllers/api-controller"
 import Catalog, {CatalogInterface} from "../../schema/catalog";
 
 

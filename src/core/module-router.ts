@@ -1,7 +1,7 @@
 import {Request, Response, Router} from "express"
 import {APIErrorInterface, APIResponseInterface} from "./server";
 import {validationResult} from "express-validator";
-import ApiController from "./api-controller";
+import ApiController from "./controllers/api-controller";
 import protectedController from "../core/middlewares/protected-controller"
 
 export type RouteMethods =

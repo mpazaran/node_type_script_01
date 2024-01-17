@@ -1,6 +1,6 @@
 // @ts-ignore
 import {ParamsDictionary, Query, Request, Response} from "express-serve-static-core"
-import {APIErrorInterface, APIResponseInterface} from "./server";
+import {APIErrorInterface, APIResponseInterface} from "../server";
 
 //import {MongoServerError} from "mongodb";
 

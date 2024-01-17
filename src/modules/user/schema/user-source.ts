@@ -5,7 +5,7 @@ const UserSourceSchema = new Schema({
         type    : "string",
         required: [
             true,
-            `CODE_REQUIRED:`
+            `CODE_REQUIRED`
         ],
         unique  : true
     },
@@ -13,7 +13,7 @@ const UserSourceSchema = new Schema({
         type    : "string",
         required: [
             true,
-            `NAME_REQUIRED:`
+            `NAME_REQUIRED`
         ]
     },
     description: {
